@@ -1,11 +1,11 @@
-﻿pipeline {
+pipeline{
     agent any
 
-    environment {
+    environment{
         dockerImage = ''
     }
 
-    stages {
+    stages{
         stage('Build') {
             steps {
                 script {
