@@ -16,8 +16,11 @@ pipeline{
         stage('Push') {
             steps {
                 script {
-                    docker.withRegistry("https://$MY_DOCKER_REGISTRY_URL", "$MY_DOCKER_REGISTRY_PW") {
-                        dockerImage.push()
+                    withCredentials([usernamePassword( credentialsId: "$MY_DOCKER_REGISTRY_PW", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        docker.withRegistry("https://$MY_DOCKER_REGISTRY_URL", "$MY_DOCKER_REGISTRY_PW") {
+                            sh "docker login -u ${USERNAME} -p ${PASSWORD} https://$MY_DOCKER_REGISTRY_URL"
+                            dockerImage.push()
+                        }
                     }
                 }
             }
